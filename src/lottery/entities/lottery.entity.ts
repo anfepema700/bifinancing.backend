@@ -1,5 +1,4 @@
 import { User } from 'src/user/entities/user.entity';
-import { WithdrawalRequest } from 'src/withdrawal-request/entities/withdrawal-request.entity';
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('sorteo')

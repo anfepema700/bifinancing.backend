@@ -1,12 +1,5 @@
-import { Lottery } from 'src/lottery/entities/lottery.entity';
 import { User } from 'src/user/entities/user.entity';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('solicitudRetiro')
 export class WithdrawalRequest {
