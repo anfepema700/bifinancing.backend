@@ -3,6 +3,8 @@ import { WithdrawalRequestService } from './withdrawal-request.service';
 import { CreateWithdrawalRequestDto } from './dto/create-withdrawal-request.dto';
 import { UpdateWithdrawalRequestDto } from './dto/update-withdrawal-request.dto';
 import { GetWithdrawalRequestByIdUserDto } from './dto/get-withdrawal-request-by-id-user.dto';
+import { CreateNewWithdrawalRequestDto } from './dto/create-new-withdrawal-request.dto';
+import { GetWithdrawalRequestByIdLotteryDto } from './dto/get-withdrawal-request-by-id-lottery.dto';
 
 @Controller('withdrawal-request')
 export class WithdrawalRequestController {
@@ -16,6 +18,15 @@ export class WithdrawalRequestController {
   ) {
     return this.withdrawalRequestService.createWithdrawalRequest(
       createWithdrawalRequestDto,
+    );
+  }
+
+  @Post('/create-new-withdrawal-request')
+  createNewWithdrawalRequest(
+    @Body() createNewWithdrawalRequestDto: CreateNewWithdrawalRequestDto,
+  ) {
+    return this.withdrawalRequestService.createNewWithdrawalRequest(
+      createNewWithdrawalRequestDto,
     );
   }
 
@@ -39,6 +50,16 @@ export class WithdrawalRequestController {
   ) {
     return this.withdrawalRequestService.getAllWithdrawalRequestByIdUser(
       getWithdrawalRequestByIdUserDto,
+    );
+  }
+
+  @Post('/all-withdrawal-request-by-id-lottery')
+  getAllWithdrawalRequestByIdLottery(
+    @Body()
+    getWithdrawalRequestByIdLottery: GetWithdrawalRequestByIdLotteryDto,
+  ) {
+    return this.withdrawalRequestService.getAllWithdrawalRequestByIdLottery(
+      getWithdrawalRequestByIdLottery,
     );
   }
 }

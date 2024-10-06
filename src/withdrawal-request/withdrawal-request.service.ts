@@ -6,6 +6,8 @@ import { CreateWithdrawalRequestDto } from './dto/create-withdrawal-request.dto'
 import { UpdateWithdrawalRequestDto } from './dto/update-withdrawal-request.dto';
 import { GetWithdrawalRequestByIdUserDto } from './dto/get-withdrawal-request-by-id-user.dto';
 import { User } from 'src/user/entities/user.entity';
+import { CreateNewWithdrawalRequestDto } from './dto/create-new-withdrawal-request.dto';
+import { GetWithdrawalRequestByIdLotteryDto } from './dto/get-withdrawal-request-by-id-lottery.dto';
 
 @Injectable()
 export class WithdrawalRequestService {
@@ -42,6 +44,34 @@ export class WithdrawalRequestService {
       );
     }
   }
+
+  async createNewWithdrawalRequest(
+    createNewWithdrawalRequestDto: CreateNewWithdrawalRequestDto,
+  ) {
+    try {
+      const { idUser } = createNewWithdrawalRequestDto;
+      const findUser = await this.userRepository.findOne({
+        where: { idUser },
+      });
+      const dataForSave = {
+        ...createNewWithdrawalRequestDto,
+        user: findUser,
+      };
+      const createWithdrawalRequest =
+        this.withdrawalRequestRepository.create(dataForSave);
+      await this.withdrawalRequestRepository.save(createWithdrawalRequest);
+      return {
+        statusCode: 200,
+        message: 'Solicitud de retiro registrada con éxito',
+      };
+    } catch (error) {
+      throw new HttpException(
+        error.message,
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async updateWithdrawalRequest(
     updateWithdrawalRequestDto: UpdateWithdrawalRequestDto,
   ) {
@@ -107,6 +137,37 @@ export class WithdrawalRequestService {
       return {
         statusCode: 200,
         data: withdrawalRequest,
+      };
+    } catch (error) {
+      throw new HttpException(
+        error.message,
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getAllWithdrawalRequestByIdLottery(
+    getWithdrawalRequestByIdLottery: GetWithdrawalRequestByIdLotteryDto,
+  ) {
+    try {
+      const { idLottery, idUser } = getWithdrawalRequestByIdLottery;
+      const findUser = await this.userRepository.findOne({
+        where: { idUser },
+        relations: { withdrawalRequest: true },
+      });
+      const filterLottery = findUser.withdrawalRequest.filter(
+        (withdrawalRequest) => withdrawalRequest.idLottery === idLottery,
+      );
+
+      if (filterLottery.length === 0) {
+        return {
+          statusCode: 200,
+          message: 'No hay solicitudes registradas',
+        };
+      }
+      return {
+        statusCode: 200,
+        data: filterLottery,
       };
     } catch (error) {
       throw new HttpException(

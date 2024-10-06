@@ -87,7 +87,6 @@ export class UserService {
       }
       return { statusCode: 200, message: `Se actualizó la información` };
     } catch (error) {
-      console.log('error', error);
       throw new HttpException(
         error.message ||
           'Error en el servidor. Por favor, inténtelo de nuevo más tarde',
